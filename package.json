@@ -1,0 +1,58 @@
+{
+  "type": "module",
+  "name": "@lgtspd/core",
+  "version": "1.0.0",
+  "description": "Javascript Lightspeed Core",
+  "homepage": "https://github.com/lgtspd/js-core#readme",
+  "bugs": "https://github.com/lgtspd/js-core/issues",
+  "repository": "github:lgtspd/js-core",
+  "bin": {
+    "lightspeed": "build/cli.js"
+  },
+  "scripts": {
+    "clean": "rm -r build",
+    "build": "clear && tsc && echo 'lgtspd: compiled'",
+    "test": "clear && tsc && mocha",
+    "dev" : "npm run build && nodemon -e js build/utils/cli.js -- ./config/testnet.json",
+    "demo" : "npm run build && nodemon -e js build/utils/cli.js -- ./config/mainnet.json"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "check-coverage": true,
+    "sourceMap": true,
+    "produce-source-map": true,
+    "all": true
+  },
+  "dependencies": {
+    "@chainsafe/libp2p-noise": "^5.0.2",
+    "@improbable-eng/grpc-web-node-http-transport": "^0.15.0",
+    "@types/cors": "^2.8.12",
+    "@types/socket.io": "^3.0.2",
+    "cors": "^2.8.5",
+    "esbuild": "^0.14.13",
+    "express": "^4.17.2",
+    "libp2p": "^0.35.8",
+    "libp2p-bootstrap": "^0.14.0",
+    "libp2p-gossipsub": "^0.12.1",
+    "libp2p-mdns": "^0.18.0",
+    "libp2p-mplex": "^0.10.7",
+    "libp2p-tcp": "^0.17.2",
+    "make-error": "^1.3.6",
+    "rpc_ts": "^2.1.0",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
+    "ts-dict": "^0.1.1",
+    "typescript": "^4.5.4"
+  },
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@types/express": "^4.17.13",
+    "mocha": "^9.2.0",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.5.0"
+  },
+  "contributors": [
+    "Mason Coles <mason@lgtspd.net>"
+  ]
+}

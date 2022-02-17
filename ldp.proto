@@ -1,0 +1,56 @@
+/*
+
+    Lightspeed Distributed Network Protocol
+
+*/
+
+syntax = "proto3";
+
+/*   RPC                               */
+
+// Add a new function
+message link_lo {
+    string func = 1;
+}
+
+// Remove an existing function
+message drop_lo {
+    string func = 1;
+}
+
+// Push a function call
+message push_lo {
+    string func = 1;
+    string data = 2;
+}
+
+// Handle incoming message
+message lo_msg {
+    string func = 1;
+    string data = 2;
+}
+
+/*   p2p                               */
+
+// Subscribe to a channel
+message link_dst {
+    string route = 1;
+}
+
+// Unsubscribe from a channel
+message drop_dst {
+    string route = 1;
+}
+
+// Push a message
+message push_dst {
+    string route = 1;
+    string data  = 2;
+}
+
+// Handle incoming message
+message dst_msg {
+    string route = 1;
+    string data  = 2; 
+    string from  = 3;
+}
