@@ -8,7 +8,7 @@
   "repository": "github:lgtspd/js-core",
   "main": "build/index.js",
   "bin": {
-    "lightspeed": "build/cli.js"
+    "lightspeed": "build/utils/cli.js"
   },
   "scripts": {
     "clean": "rm -r build",
