@@ -13,7 +13,7 @@ export default class P2P {
     this._bootstrap = bootstrap;
   }
 
-  async init() {
+  async init(emitSelf=false) {
     this.log = Log.link(this);
     this._node = await Libp2p.create({
       addresses: { listen: ["/ip4/0.0.0.0/tcp/0"] }, // Addresses for the node to listen on
@@ -36,8 +36,11 @@ export default class P2P {
           mdns: {
             interval: 20e3,
             enabled: true,
-          },
+          }
         },
+        pubsub: {
+          emitSelf: emitSelf
+        }
       },
     });
     await this._node.start();
@@ -47,23 +50,23 @@ export default class P2P {
     this._node.connectionManager.on("peer:connect", (connection) =>
       this.log.verbose(`Linked ${connection.remotePeer.toB58String()}`)
     );
-    this.log.debug(`Using  ${this._node.peerId.toB58String()}`);
+    this.log.debug(`Using ${this._node.peerId.toB58String()}`);
   }
 
   subscribe(channel, func) {
-    this.log.verbose(`subscribing to ${channel}`);
+    this.log.verbose(`link ${channel}`);
     this._node.pubsub.on(channel, func);
     this._node.pubsub.subscribe(channel);
   }
 
   unsubscribe(channel) {
-    this.log.verbose(`unsubscribing from ${channel}`);
+    this.log.verbose(`drop ${channel}`);
     this._node.pubsub.unsubscribe(channel);
   }
 
   push(channel, message) {
-    this.log.verbose(`pushing ${message} to ${channel}`);
-    this.p2p._node.pubsub.publish(channel, message);
+    this.log.verbose(`push ${channel}`);
+    this._node.pubsub.publish(channel, message);
   }
 
   close() {

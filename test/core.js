@@ -3,7 +3,7 @@ import * as ls from '../build/index.js'
 
 let logInstance;
 
-ls.Log.init('verbose')
+ls.Log.init()
 
 it('should initialize a logger', async function() {
     logInstance = ls.Log.link(ls.Log)

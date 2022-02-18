@@ -6,6 +6,12 @@
 
 syntax = "proto3";
 
+/*   Module                            */
+
+message register {
+    string id = 1;
+}
+
 /*   RPC                               */
 
 // Add a new function
@@ -34,12 +40,14 @@ message lo_msg {
 
 // Subscribe to a channel
 message link_dst {
-    string route = 1;
+    string id = 1;
+    string route = 2;
 }
 
 // Unsubscribe from a channel
 message drop_dst {
-    string route = 1;
+    string id = 1;
+    string route = 2;
 }
 
 // Push a message

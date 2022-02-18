@@ -4,68 +4,72 @@ import * as http from 'http';
 import * as SocketIO from 'socket.io'
 import Dict from "ts-dict";
 import fs from 'fs'
+import {v4 as uuidv4} from 'uuid';
 
-import { P2P, Log, log, LDP, RPC } from './index.js'
+const DEBUG = true;
+
+import { P2P, Log, log, LDNP, RPC } from './index.js'
 
 export default class Core {
     // System
     private log    : log
-    private _mods  : Dict<Module> = {}
+    private mods   : string[] = []
     // Socket
-    private app    : Application = express();
+    private app    : Application
     private server : http.Server
     private port   : number
-    // LDP
-    private socket : SocketIO.Server
-    private ldp?   : LDP
+    // LDNP
+    public socket  : SocketIO.Server
+    public ldnp   : LDNP
     // p2p
-    private p2p    : P2P
+    public p2p     : P2P
     // RCP
-    private rpc    : RPC
+    public rpc     : RPC
     
 
-    constructor(bootstrap: string[], port: number=45100, proto:string='ldp.proto') {
+    constructor(app:Application, port: number=45100, p2p:P2P, ldnp:LDNP, rpc:RPC) {
         // System
+        this.app = app
         this.log = Log.link(this)
+        this.p2p = p2p
+        this.rpc = rpc
         // Socket
         this.port = port
         this.app.use(cors())
         this.server = http.createServer(this.app)
-        // LDP
+        // LDNP
         this.socket = new SocketIO.Server(this.server, {cors:{origin:"*"}})
-        this.server.listen(this.port, () => this.log.debug(`Socket open on port ${this.port}`))
-        LDP.init(proto, this.socket).then(ldp => this.ldp = ldp)
-        // p2p
-        this.p2p = new P2P(bootstrap)
-        // rpc
-        this.rpc = new RPC(this.app, this.mods)
-    }
-
-    private async init() {
-        await this.p2p.init();
+        this.server.listen(this.port, () => this.log.debug(`Socket open on port ${this.port}`))  
+        
+        this.ldnp = ldnp
+        this.ldnp.host(this)
     }
 
     // public
 
-    public mods() {
-        return Object.keys(this._mods)
+    public list() {
+        return this.mods
     }
 
     // Static Functions
 
     public static async load(path:string, inst:number=0) {
+        // Load config file
         const log = Log.link(this)
         const cfg = JSON.parse(fs.readFileSync(path).toString())
         if (inst === 0) log.eoa(`Loading network ${cfg.name}`)
         Log.drop(this, true)
-        const core = new Core(cfg.bootstrap, cfg.port + inst)
-        await core.init()
+        // system
+        const app = express();
+        // ldnp
+        const ldnp = await LDNP.init(cfg.ldnp)
+        // rpc
+        const rpc = new RPC(app, ldnp)
+        // p2p
+        const p2p = new P2P(cfg.bootstrap)
+        await p2p.init(DEBUG);
+        // core init
+        const core = new Core(app, cfg.port + inst, p2p, ldnp, rpc)
         return core
     }
-}
-
-
-interface Module {
-    route: string
-    
 }
