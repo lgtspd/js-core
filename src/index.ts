@@ -4,6 +4,8 @@ import RPC from './components/rpc.js'
 import Core from './core.js'
 import LDNP from './components/ldnp.js'
 
+export default Core
+
 export {
     log,
     Log,
