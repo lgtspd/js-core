@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@lgtspd/core",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "Javascript Lightspeed Core",
   "homepage": "https://github.com/lgtspd/js-core#readme",
   "bugs": "https://github.com/lgtspd/js-core/issues",
