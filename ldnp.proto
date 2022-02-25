@@ -1,0 +1,55 @@
+/*
+
+    Lightspeed Distributed Network Protocol
+
+*/
+
+syntax = "proto3";
+
+
+// Database
+message cfg {}
+
+message set {
+    string k = 1;
+    string v = 2;
+}
+
+message get {
+    string k = 1;
+}
+
+// Filestore
+message dnl {
+
+}
+
+message upl {
+    
+}
+
+// Network
+message psh {
+    string id = 1;
+    string data = 2;
+}
+
+message fwd {
+    string data = 1;
+}
+
+// System
+message _reg {
+    string id   = 1;
+    string addr = 2;
+}
+
+message _pck {
+    string key = 1;
+    string dat = 2;
+    string sig = 3;
+}
+
+message _ack {
+    string stat = 1;
+}

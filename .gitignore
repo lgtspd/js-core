@@ -1,0 +1,7 @@
+node_modules/
+build/
+config/*
+!config/testnet.json
+package-lock.json
+.nyc_output/
+store/*

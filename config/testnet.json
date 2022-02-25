@@ -1,0 +1,9 @@
+{
+    "name": "Photon Testnet",
+    "bootstrap": [
+        "/ip4/104.131.131.82/tcp/4001/p2p/QmaCpDMGvV2BGHeYERUEnRQAwe3N8SzbUtfsmvsqQLuvuJ"
+        ],
+    "port": 45100,
+    "ldnp": "ldnp.proto",
+    "admin": "ls_29bf87a194544b06d0f68adb626299721475fefc675b85de5b1ca96878121862"
+}
